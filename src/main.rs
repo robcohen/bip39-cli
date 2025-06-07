@@ -165,7 +165,7 @@ fn main() {
 
     if let Some(command) = cli.command {
         if let Err(e) = run_command(command) {
-            eprintln!("Error: {}", e);
+            eprintln!("Error: {e}");
             std::process::exit(1);
         }
     } else {
@@ -189,20 +189,18 @@ impl fmt::Display for CliError {
             CliError::InvalidEntropyLength { actual, expected } => {
                 write!(
                     f,
-                    "Invalid entropy length: {} hex chars. Expected one of: {:?}",
-                    actual, expected
+                    "Invalid entropy length: {actual} hex chars. Expected one of: {expected:?}"
                 )
             }
-            CliError::InvalidHexString(msg) => write!(f, "{}", msg),
+            CliError::InvalidHexString(msg) => write!(f, "{msg}"),
             CliError::InvalidWordCount { actual, expected } => {
                 write!(
                     f,
-                    "Invalid mnemonic word count: {}. Expected one of: {:?}",
-                    actual, expected
+                    "Invalid mnemonic word count: {actual}. Expected one of: {expected:?}"
                 )
             }
-            CliError::MnemonicError(e) => write!(f, "BIP39 error: {}", e),
-            CliError::HexDecodeError(e) => write!(f, "Hex decode error: {}", e),
+            CliError::MnemonicError(e) => write!(f, "BIP39 error: {e}"),
+            CliError::HexDecodeError(e) => write!(f, "Hex decode error: {e}"),
         }
     }
 }
