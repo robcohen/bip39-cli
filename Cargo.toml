@@ -1,0 +1,33 @@
+[package]
+name = "bip39-cli"
+version = "0.1.0"
+edition = "2021"
+description = "Command-line tool for BIP39 mnemonic operations using the trusted rust-bitcoin library"
+license = "CC0-1.0"
+repository = "https://github.com/robcohen/bip39-cli"
+keywords = ["bip39", "mnemonic", "bitcoin", "crypto", "cli"]
+categories = ["command-line-utilities", "cryptography"]
+
+[[bin]]
+name = "bip39"
+path = "src/main.rs"
+
+[dependencies]
+bip39 = { version = "2.1.0", features = ["all-languages"] }
+clap = { version = "4.4", features = ["derive"] }
+clap_complete = "4.4"
+rand = "0.8"
+hex = "0.4"
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+
+[[bench]]
+name = "bip39_bench"
+harness = false
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
