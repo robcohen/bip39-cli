@@ -274,8 +274,8 @@ fn run_command(command: Commands) -> Result<(), CliError> {
                 WordCount::TwentyOne => 21,
                 WordCount::TwentyFour => 24,
             };
-            println!("Mnemonic ({} words):", word_count);
-            println!("{}", mnemonic);
+            println!("Mnemonic ({word_count} words):");
+            println!("{mnemonic}");
 
             if show_entropy {
                 println!("\nEntropy ({} bits):", words.to_entropy_bits());
@@ -294,7 +294,7 @@ fn run_command(command: Commands) -> Result<(), CliError> {
             match Mnemonic::parse_in_normalized(language.into(), &mnemonic) {
                 Ok(_) => println!("✓ Valid BIP39 mnemonic"),
                 Err(e) => {
-                    println!("✗ Invalid BIP39 mnemonic: {}", e);
+                    println!("✗ Invalid BIP39 mnemonic: {e}");
                     std::process::exit(1);
                 }
             }
@@ -331,8 +331,8 @@ fn run_command(command: Commands) -> Result<(), CliError> {
                     });
                 }
             };
-            println!("Mnemonic ({} words):", word_count);
-            println!("{}", mnemonic);
+            println!("Mnemonic ({word_count} words):");
+            println!("{mnemonic}");
         }
 
         Commands::Entropy { mnemonic, language } => {
