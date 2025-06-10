@@ -1,0 +1,217 @@
+.TH BIP39 1 "2025" "bip39-cli 0.1.0" "User Commands"
+.SH NAME
+bip39 \- comprehensive, secure command-line tool for BIP39 mnemonic operations
+.SH SYNOPSIS
+.B bip39
+[\fB\-\-secure\fR]
+[\fB\-\-security\-check\fR]
+[\fB\-\-generate\fR \fISHELL\fR]
+[\fIsubcommand\fR]
+.SH DESCRIPTION
+.B bip39
+is a comprehensive, secure command-line tool for BIP39 mnemonic operations built on the rust-bitcoin ecosystem. It provides a complete, auditable implementation of BIP-39 operations with advanced security features for production use.
+.PP
+The tool uses cryptographically secure random number generation (OsRng), implements automatic memory protection with zeroization of sensitive data, and includes advanced security analysis features including entropy quality assessment, air-gap environment detection, and passphrase strength analysis.
+.SH GLOBAL OPTIONS
+.TP
+.BR \-\-secure
+Enable enhanced security mode with additional checks and warnings
+.TP
+.BR \-\-security\-check
+Display comprehensive security recommendations and environment analysis
+.TP
+.BR \-\-generate \ \fISHELL\fR
+Generate shell completion scripts for the specified shell (bash, elvish, fish, powershell, zsh)
+.TP
+.BR \-h ", " \-\-help
+Print help information
+.TP
+.BR \-V ", " \-\-version
+Print version information
+.SH SUBCOMMANDS
+.TP
+.B generate
+Generate a new mnemonic phrase
+.TP
+.B validate
+Validate a mnemonic phrase
+.TP
+.B seed
+Convert mnemonic to seed
+.TP
+.B from-entropy
+Generate mnemonic from provided entropy
+.TP
+.B entropy
+Get entropy from a mnemonic
+.SH GENERATE OPTIONS
+.TP
+.BR \-w ", " \-\-words \ \fICOUNT\fR
+Number of words in the mnemonic (12, 15, 18, 21, or 24). Default: 12
+.TP
+.BR \-l ", " \-\-language \ \fILANG\fR
+Language for the mnemonic (default: english)
+.TP
+.B \-\-show-entropy
+Show entropy used to generate the mnemonic
+.TP
+.B \-\-show-seed
+Show seed derived from the mnemonic
+.TP
+.B \-\-passphrase \ \fIPASSPHRASE\fR
+Passphrase for seed derivation (only used with \-\-show-seed)
+.TP
+.B \-\-secure-passphrase
+Use secure input for passphrase (hidden from terminal)
+.TP
+.B \-\-analyze-entropy
+Perform statistical analysis of entropy quality
+.TP
+.BR \-q ", " \-\-quiet
+Output only raw data without headers (useful for piping)
+.SH VALIDATE OPTIONS
+.TP
+.I mnemonic
+The mnemonic phrase to validate (space-separated words)
+.TP
+.BR \-l ", " \-\-language \ \fILANG\fR
+Language of the mnemonic (default: english)
+.TP
+.B \-\-secure-input
+Use secure input for mnemonic (hidden from terminal)
+.TP
+.BR \-q ", " \-\-quiet
+Output only raw data without headers (useful for piping)
+.SH SEED OPTIONS
+.TP
+.I mnemonic
+The mnemonic phrase (space-separated words)
+.TP
+.BR \-p ", " \-\-passphrase \ \fIPASSPHRASE\fR
+Passphrase for seed derivation
+.TP
+.B \-\-analyze-passphrase
+Analyze passphrase strength and provide recommendations
+.TP
+.BR \-l ", " \-\-language \ \fILANG\fR
+Language of the mnemonic (default: english)
+.TP
+.BR \-q ", " \-\-quiet
+Output only raw data without headers (useful for piping)
+.SH FROM-ENTROPY OPTIONS
+.TP
+.I entropy
+Entropy as hex string (32, 40, 48, 56, or 64 hex chars for 12, 15, 18, 21, or 24 words)
+.TP
+.BR \-l ", " \-\-language \ \fILANG\fR
+Language for the mnemonic (default: english)
+.TP
+.BR \-q ", " \-\-quiet
+Output only raw data without headers (useful for piping)
+.SH ENTROPY OPTIONS
+.TP
+.I mnemonic
+The mnemonic phrase (space-separated words)
+.TP
+.BR \-l ", " \-\-language \ \fILANG\fR
+Language of the mnemonic (default: english)
+.TP
+.BR \-q ", " \-\-quiet
+Output only raw data without headers (useful for piping)
+.SH SUPPORTED LANGUAGES
+.PP
+english, japanese, korean, spanish, chinese-simplified, chinese-traditional, french, italian, czech, portuguese
+.SH WORD COUNTS AND ENTROPY
+.TS
+tab(|);
+l l l l.
+Words|Entropy Bits|Entropy Bytes|Hex Length
+12|128|16|32
+15|160|20|40
+18|192|24|48
+21|224|28|56
+24|256|32|64
+.TE
+.SH EXAMPLES
+.SS Basic Generation
+.TP
+Generate a 24-word mnemonic:
+.B bip39 generate \-\-words 24
+.TP
+Generate with entropy and seed display:
+.B bip39 generate \-\-show-entropy \-\-show-seed
+.TP
+Generate in Japanese:
+.B bip39 generate \-\-language japanese
+.SS Security Features
+.TP
+Generate with secure mode and entropy analysis:
+.B bip39 \-\-secure generate \-\-analyze-entropy
+.TP
+Generate with secure passphrase input:
+.B bip39 generate \-\-show-seed \-\-secure-passphrase
+.TP
+Check security recommendations:
+.B bip39 \-\-security-check
+.SS Validation and Conversion
+.TP
+Validate a mnemonic:
+.B bip39 validate "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
+.TP
+Validate with secure input:
+.B bip39 validate \-\-secure-input
+.TP
+Convert mnemonic to seed with passphrase analysis:
+.B bip39 seed "your mnemonic phrase here" \-\-passphrase "optional passphrase" \-\-analyze-passphrase
+.SS Entropy Operations
+.TP
+Generate from entropy:
+.B bip39 from-entropy a0a1a2a3a4a5a6a7a8a9aaabacadaeaf
+.TP
+Extract entropy from mnemonic:
+.B bip39 entropy "your mnemonic phrase here"
+.SS Shell Integration
+.TP
+Generate shell completions for bash:
+.B bip39 \-\-generate bash > ~/.local/share/bash-completion/completions/bip39
+.TP
+Quiet mode for scripting:
+.B bip39 generate \-\-words 12 \-\-quiet
+.SH SECURITY CONSIDERATIONS
+.PP
+This tool implements comprehensive security measures including:
+.PP
+.B Cryptographic Security:
+Uses OsRng for cryptographically secure random number generation, implements automatic memory zeroization for sensitive data, provides entropy quality assessment using statistical tests, and validates air-gap environment security.
+.PP
+.B Best Practices:
+Use air-gapped systems for maximum security when handling production mnemonics. Verify software integrity before use in production environments. Use secure mode (\-\-secure) for enhanced security checks. Enable entropy analysis (\-\-analyze-entropy) to validate randomness quality. Use secure input (\-\-secure-input, \-\-secure-passphrase) to prevent terminal logging.
+.PP
+.B Critical Warnings:
+Never share your mnemonic phrases - they provide full access to your funds. Store physical backups in secure locations. Consider using steel/metal backup plates. Test recovery before funding wallets. Clear terminal history after use. Reboot system to clear memory after sensitive operations.
+.PP
+.B Audit Trail:
+This tool includes 39 comprehensive tests that validate correctness and security, all 24 official BIP39 test vectors verified for compliance, property-based testing ensures algorithmic correctness, and zero compilation warnings with strict linting.
+.SH EXIT STATUS
+.TP
+.B 0
+Success
+.TP
+.B 1
+Error occurred
+.SH AUTHOR
+Built on the excellent libraries maintained by the Rust Bitcoin community:
+.BR rust-bip39 " - BIP39 implementation"
+.BR rust-bitcoin " - Bitcoin ecosystem"
+.PP
+Special thanks to the Bitcoin Core developers and the BIP39 specification authors for their foundational work.
+.SH SEE ALSO
+.BR bitcoin (1),
+.BR openssl (1),
+.BR gpg (1)
+.PP
+BIP-39 specification: https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki
+.PP
+Rust Bitcoin: https://github.com/rust-bitcoin/rust-bitcoin
+.PP
+Hardware Wallet Interface: https://github.com/bitcoin-core/HWI
