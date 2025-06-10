@@ -8,7 +8,7 @@ fn bench_generate_mnemonic(c: &mut Criterion) {
     for &word_count in &[12, 15, 18, 21, 24] {
         let entropy_bytes = word_count * 32 / 24; // Convert word count to entropy bytes
 
-        group.bench_function(format!("{}_words", word_count), |b| {
+        group.bench_function(format!("{word_count}_words"), |b| {
             b.iter(|| {
                 let mut entropy = vec![0u8; entropy_bytes];
                 OsRng.fill_bytes(&mut entropy);
@@ -101,8 +101,8 @@ fn bench_languages(c: &mut Criterion) {
     let mut group = c.benchmark_group("languages");
 
     for language in &languages {
-        let lang_name = format!("{:?}", language).to_lowercase();
-        group.bench_function(format!("generate_{}", lang_name), |b| {
+        let lang_name = format!("{language:?}").to_lowercase();
+        group.bench_function(format!("generate_{lang_name}"), |b| {
             b.iter(|| {
                 black_box(Mnemonic::from_entropy_in(*language, &entropy).unwrap());
             })

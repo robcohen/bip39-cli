@@ -42,6 +42,10 @@ enum Commands {
         /// Passphrase for seed derivation (only used with --show-seed)
         #[arg(long, default_value = "")]
         passphrase: String,
+
+        /// Output only raw data without headers (useful for piping)
+        #[arg(short, long)]
+        quiet: bool,
     },
 
     /// Validate a mnemonic phrase
@@ -52,6 +56,10 @@ enum Commands {
         /// Language of the mnemonic
         #[arg(short, long, default_value = "english")]
         language: LanguageOption,
+
+        /// Output only raw data without headers (useful for piping)
+        #[arg(short, long)]
+        quiet: bool,
     },
 
     /// Convert mnemonic to seed
@@ -66,6 +74,10 @@ enum Commands {
         /// Language of the mnemonic
         #[arg(short, long, default_value = "english")]
         language: LanguageOption,
+
+        /// Output only raw data without headers (useful for piping)
+        #[arg(short, long)]
+        quiet: bool,
     },
 
     /// Generate mnemonic from provided entropy
@@ -76,6 +88,10 @@ enum Commands {
         /// Language for the mnemonic
         #[arg(short, long, default_value = "english")]
         language: LanguageOption,
+
+        /// Output only raw data without headers (useful for piping)
+        #[arg(short, long)]
+        quiet: bool,
     },
 
     /// Get entropy from a mnemonic
@@ -86,6 +102,10 @@ enum Commands {
         /// Language of the mnemonic
         #[arg(short, long, default_value = "english")]
         language: LanguageOption,
+
+        /// Output only raw data without headers (useful for piping)
+        #[arg(short, long)]
+        quiet: bool,
     },
 }
 
@@ -119,7 +139,7 @@ impl WordCount {
     }
 }
 
-#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum)]
+#[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 enum LanguageOption {
     English,
     Japanese,
@@ -259,6 +279,7 @@ fn run_command(command: Commands) -> Result<(), CliError> {
             show_entropy,
             show_seed,
             passphrase,
+            quiet,
         } => {
             let mut entropy = vec![0u8; words.to_entropy_bytes()];
             OsRng.fill_bytes(&mut entropy);
@@ -272,27 +293,85 @@ fn run_command(command: Commands) -> Result<(), CliError> {
                 WordCount::TwentyOne => 21,
                 WordCount::TwentyFour => 24,
             };
-            println!("Mnemonic ({word_count} words):");
+            if !quiet {
+                let bits = words.to_entropy_bits();
+                println!("Generated Mnemonic");
+                println!("═══════════════════");
+                println!("Words: {word_count}");
+                println!("Entropy: {bits} bits");
+                println!();
+            }
             println!("{mnemonic}");
 
             if show_entropy {
-                println!("\nEntropy ({} bits):", words.to_entropy_bits());
-                println!("{}", hex::encode(&entropy));
+                let bits = words.to_entropy_bits();
+                if !quiet {
+                    println!();
+                    println!("Raw Entropy");
+                    println!("═══════════");
+                    println!("Bits: {bits}");
+                    println!("Bytes: {}", entropy.len());
+                    println!();
+                } else {
+                    println!();
+                }
+                let encoded = hex::encode(&entropy);
+                println!("{encoded}");
             }
 
             if show_seed {
                 let seed = mnemonic.to_seed(&passphrase);
-                println!("\nSeed (512 bits):");
-                println!("{}", hex::encode(seed));
+                if !quiet {
+                    if !show_entropy {
+                        println!();
+                    }
+                    println!("Derived Seed");
+                    println!("════════════");
+                    println!("Length: 512 bits (64 bytes)");
+                    if !passphrase.is_empty() {
+                        println!("Passphrase: Used");
+                    } else {
+                        println!("Passphrase: None");
+                    }
+                    println!();
+                } else if show_entropy {
+                    println!();
+                }
+                let encoded_seed = hex::encode(seed);
+                println!("{encoded_seed}");
             }
         }
 
-        Commands::Validate { mnemonic, language } => {
+        Commands::Validate { mnemonic, language, quiet } => {
             validate_mnemonic_word_count(&mnemonic)?;
             match Mnemonic::parse_in_normalized(language.into(), &mnemonic) {
-                Ok(_) => println!("✓ Valid BIP39 mnemonic"),
+                Ok(parsed_mnemonic) => {
+                    if quiet {
+                        println!("valid");
+                    } else {
+                        let entropy = parsed_mnemonic.to_entropy();
+                        let word_count = mnemonic.split_whitespace().count();
+                        let bits = entropy.len() * 8;
+                        println!("Mnemonic Validation");
+                        println!("═══════════════════");
+                        println!("✓ Status: Valid BIP39 mnemonic");
+                        println!("Words: {word_count}");
+                        println!("Entropy: {bits} bits");
+                        println!("Language: {:?}", language);
+                    }
+                }
                 Err(e) => {
-                    println!("✗ Invalid BIP39 mnemonic: {e}");
+                    if quiet {
+                        println!("invalid");
+                    } else {
+                        let word_count = mnemonic.split_whitespace().count();
+                        println!("Mnemonic Validation");
+                        println!("═══════════════════");
+                        println!("✗ Status: Invalid BIP39 mnemonic");
+                        println!("Words: {word_count}");
+                        println!("Error: {e}");
+                        println!("Language: {:?}", language);
+                    }
                     std::process::exit(1);
                 }
             }
@@ -302,16 +381,33 @@ fn run_command(command: Commands) -> Result<(), CliError> {
             mnemonic,
             passphrase,
             language,
+            quiet,
         } => {
             validate_mnemonic_word_count(&mnemonic)?;
-            let mnemonic = Mnemonic::parse_in_normalized(language.into(), &mnemonic)?;
-            let seed = mnemonic.to_seed(&passphrase);
+            let mnemonic_obj = Mnemonic::parse_in_normalized(language.into(), &mnemonic)?;
+            let seed = mnemonic_obj.to_seed(&passphrase);
 
-            println!("Seed (512 bits):");
-            println!("{}", hex::encode(seed));
+            if !quiet {
+                let entropy = mnemonic_obj.to_entropy();
+                let word_count = mnemonic.split_whitespace().count();
+                let entropy_bits = entropy.len() * 8;
+                println!("Seed Generation");
+                println!("════════════════");
+                println!("Input words: {word_count}");
+                println!("Input entropy: {entropy_bits} bits");
+                println!("Output: 512 bits (64 bytes)");
+                if !passphrase.is_empty() {
+                    println!("Passphrase: Used");
+                } else {
+                    println!("Passphrase: None");
+                }
+                println!();
+            }
+            let encoded_seed = hex::encode(seed);
+            println!("{encoded_seed}");
         }
 
-        Commands::FromEntropy { entropy, language } => {
+        Commands::FromEntropy { entropy, language, quiet } => {
             validate_entropy_hex(&entropy)?;
             let entropy_bytes = hex::decode(&entropy)?;
             let mnemonic = Mnemonic::from_entropy_in(language.into(), &entropy_bytes)?;
@@ -329,17 +425,35 @@ fn run_command(command: Commands) -> Result<(), CliError> {
                     });
                 }
             };
-            println!("Mnemonic ({word_count} words):");
+            if !quiet {
+                let bits = entropy_bytes.len() * 8;
+                println!("Mnemonic from Entropy");
+                println!("══════════════════════");
+                println!("Input entropy: {bits} bits ({} bytes)", entropy_bytes.len());
+                println!("Output words: {word_count}");
+                println!("Language: {:?}", language);
+                println!();
+            }
             println!("{mnemonic}");
         }
 
-        Commands::Entropy { mnemonic, language } => {
+        Commands::Entropy { mnemonic, language, quiet } => {
             validate_mnemonic_word_count(&mnemonic)?;
-            let mnemonic = Mnemonic::parse_in_normalized(language.into(), &mnemonic)?;
-            let entropy = mnemonic.to_entropy();
+            let mnemonic_obj = Mnemonic::parse_in_normalized(language.into(), &mnemonic)?;
+            let entropy = mnemonic_obj.to_entropy();
 
-            println!("Entropy ({} bits):", entropy.len() * 8);
-            println!("{}", hex::encode(&entropy));
+            let bits = entropy.len() * 8;
+            if !quiet {
+                let word_count = mnemonic.split_whitespace().count();
+                println!("Entropy Extraction");
+                println!("═══════════════════");
+                println!("Input words: {word_count}");
+                println!("Output entropy: {bits} bits ({} bytes)", entropy.len());
+                println!("Language: {:?}", language);
+                println!();
+            }
+            let encoded_entropy = hex::encode(&entropy);
+            println!("{encoded_entropy}");
         }
     }
 
