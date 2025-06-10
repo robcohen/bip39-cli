@@ -24,7 +24,7 @@ enum Commands {
     /// Generate a new mnemonic phrase
     Generate {
         /// Number of words in the mnemonic (12, 15, 18, 21, or 24)
-        #[arg(short, long, default_value = "24")]
+        #[arg(short, long)]
         words: WordCount,
 
         /// Language for the mnemonic
