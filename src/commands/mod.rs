@@ -6,7 +6,7 @@ pub mod validate;
 use crate::cli::Commands;
 use crate::error::CliError;
 
-pub fn run_command(command: Commands, secure_mode: bool) -> Result<(), CliError> {
+pub fn run_command(command: Commands) -> Result<(), CliError> {
     match command {
         Commands::Generate {
             words,
@@ -26,7 +26,6 @@ pub fn run_command(command: Commands, secure_mode: bool) -> Result<(), CliError>
             secure_passphrase,
             analyze_entropy,
             quiet,
-            secure_mode,
         }),
 
         Commands::Validate {
@@ -34,7 +33,7 @@ pub fn run_command(command: Commands, secure_mode: bool) -> Result<(), CliError>
             language,
             secure_input,
             quiet,
-        } => validate::handle_validate(mnemonic, language, secure_input, quiet, secure_mode),
+        } => validate::handle_validate(mnemonic, language, secure_input, quiet),
 
         Commands::Seed {
             mnemonic,
@@ -50,19 +49,18 @@ pub fn run_command(command: Commands, secure_mode: bool) -> Result<(), CliError>
             analyze_passphrase,
             language,
             quiet,
-            secure_mode,
         ),
 
         Commands::FromEntropy {
             entropy,
             language,
             quiet,
-        } => entropy::handle_from_entropy(entropy, language, quiet, secure_mode),
+        } => entropy::handle_from_entropy(entropy, language, quiet),
 
         Commands::Entropy {
             mnemonic,
             language,
             quiet,
-        } => entropy::handle_entropy(mnemonic, language, quiet, secure_mode),
+        } => entropy::handle_entropy(mnemonic, language, quiet),
     }
 }

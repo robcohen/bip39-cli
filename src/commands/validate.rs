@@ -9,9 +9,8 @@ pub fn handle_validate(
     language: LanguageOption,
     secure_input: bool,
     quiet: bool,
-    secure_mode: bool,
 ) -> Result<(), CliError> {
-    let final_mnemonic = if secure_input || secure_mode {
+    let final_mnemonic = if secure_input {
         crate::security::secure_mnemonic_input("Enter mnemonic to validate:", language.into())?
     } else {
         mnemonic

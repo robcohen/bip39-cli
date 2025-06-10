@@ -3,7 +3,6 @@
 bip39 \- comprehensive, secure command-line tool for BIP39 mnemonic operations
 .SH SYNOPSIS
 .B bip39
-[\fB\-\-secure\fR]
 [\fB\-\-security\-check\fR]
 [\fB\-\-generate\fR \fISHELL\fR]
 [\fIsubcommand\fR]
@@ -13,9 +12,6 @@ is a comprehensive, secure command-line tool for BIP39 mnemonic operations built
 .PP
 The tool uses cryptographically secure random number generation (OsRng), implements automatic memory protection with zeroization of sensitive data, and includes advanced security analysis features including entropy quality assessment, air-gap environment detection, and passphrase strength analysis.
 .SH GLOBAL OPTIONS
-.TP
-.BR \-\-secure
-Enable enhanced security mode with additional checks and warnings
 .TP
 .BR \-\-security\-check
 Display comprehensive security recommendations and environment analysis
@@ -145,8 +141,8 @@ Generate in Japanese:
 .B bip39 generate \-\-language japanese
 .SS Security Features
 .TP
-Generate with secure mode and entropy analysis:
-.B bip39 \-\-secure generate \-\-analyze-entropy
+Generate with entropy analysis:
+.B bip39 generate \-\-analyze-entropy
 .TP
 Generate with secure passphrase input:
 .B bip39 generate \-\-show-seed \-\-secure-passphrase
@@ -185,7 +181,7 @@ This tool implements comprehensive security measures including:
 Uses OsRng for cryptographically secure random number generation, implements automatic memory zeroization for sensitive data, provides entropy quality assessment using statistical tests, and validates air-gap environment security.
 .PP
 .B Best Practices:
-Use air-gapped systems for maximum security when handling production mnemonics. Verify software integrity before use in production environments. Use secure mode (\-\-secure) for enhanced security checks. Enable entropy analysis (\-\-analyze-entropy) to validate randomness quality. Use secure input (\-\-secure-input, \-\-secure-passphrase) to prevent terminal logging.
+Use air-gapped systems for maximum security when handling production mnemonics. Verify software integrity before use in production environments. Run security checks (\-\-security-check) for environment analysis. Enable entropy analysis (\-\-analyze-entropy) to validate randomness quality. Use secure input (\-\-secure-input, \-\-secure-passphrase) to prevent terminal logging.
 .PP
 .B Critical Warnings:
 Never share your mnemonic phrases - they provide full access to your funds. Store physical backups in secure locations. Consider using steel/metal backup plates. Test recovery before funding wallets. Clear terminal history after use. Reboot system to clear memory after sensitive operations.

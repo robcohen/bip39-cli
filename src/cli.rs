@@ -15,10 +15,6 @@ pub struct Cli {
     #[arg(long = "generate", value_enum)]
     pub generator: Option<Shell>,
 
-    /// Enable secure mode with enhanced security features
-    #[arg(long, global = true)]
-    pub secure: bool,
-
     /// Show security recommendations and environment check
     #[arg(long, global = true)]
     pub security_check: bool,

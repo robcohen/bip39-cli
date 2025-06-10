@@ -18,7 +18,6 @@ This tool provides a complete, auditable implementation of [BIP-39](https://gith
 - **Multi-language support** for all 10 BIP39 standard languages
 
 ### Security Features
-- **🔒 Secure mode** with enhanced security checks and warnings
 - **🔐 Secure input** for mnemonics and passphrases (hidden from terminal)
 - **🔍 Entropy quality analysis** with statistical validation
 - **✈️ Air-gap environment detection** and security recommendations
@@ -104,11 +103,8 @@ bip39 entropy "your mnemonic phrase here"
 
 ### 🔒 Security Features
 
-#### Secure Mode
+#### Security Check
 ```bash
-# Enable enhanced security mode
-bip39 --secure generate --words 12
-
 # Security check and recommendations
 bip39 --security-check
 ```
@@ -127,8 +123,8 @@ bip39 generate --show-seed --secure-passphrase
 # Analyze entropy quality during generation
 bip39 generate --analyze-entropy
 
-# In secure mode, low-quality entropy is rejected
-bip39 --secure generate --analyze-entropy
+# Generate with entropy analysis
+bip39 generate --analyze-entropy
 ```
 
 #### Passphrase Strength Assessment
@@ -186,7 +182,7 @@ All BIP39 standard languages are supported:
 ### Best Practices
 - **Use air-gapped systems** for maximum security when handling production mnemonics
 - **Verify software integrity** before use in production environments
-- **Use secure mode** (`--secure`) for enhanced security checks
+- **Run security checks** (`--security-check`) for environment analysis
 - **Enable entropy analysis** (`--analyze-entropy`) to validate randomness quality
 - **Use secure input** (`--secure-input`, `--secure-passphrase`) to prevent terminal logging
 

@@ -40,17 +40,25 @@ pub fn run() -> Result<(), CliError> {
         return Ok(());
     }
 
-    // Show security warnings in secure mode
-    if cli.secure {
-        security::show_security_warnings().map_err(|e| CliError::InvalidHexString {
-            message: format!("Failed to display security warnings: {}", e),
-            position: None,
-            hint: "Terminal may not support colored output".to_string(),
-        })?;
-    }
-
     if let Some(command) = cli.command {
-        commands::run_command(command, cli.secure)?;
+        // Show security warnings by default unless in quiet mode
+        let is_quiet = match &command {
+            cli::Commands::Generate { quiet, .. } => *quiet,
+            cli::Commands::Validate { quiet, .. } => *quiet,
+            cli::Commands::Seed { quiet, .. } => *quiet,
+            cli::Commands::FromEntropy { quiet, .. } => *quiet,
+            cli::Commands::Entropy { quiet, .. } => *quiet,
+        };
+
+        if !is_quiet {
+            security::show_security_warnings().map_err(|e| CliError::InvalidHexString {
+                message: format!("Failed to display security warnings: {e}"),
+                position: None,
+                hint: "Terminal may not support colored output".to_string(),
+            })?;
+        }
+
+        commands::run_command(command)?;
     } else {
         return Err(CliError::NoCommandProvided);
     }

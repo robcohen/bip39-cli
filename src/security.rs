@@ -408,7 +408,7 @@ pub fn show_security_warnings() -> Result<(), std::io::Error> {
 
     term.write_line(&format!(
         "{}",
-        info_style.apply_to("⚡ Use --secure flag for enhanced security mode")
+        info_style.apply_to("⚡ Security features are enabled by default")
     ))?;
     term.write_line("")?;
 

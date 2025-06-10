@@ -9,7 +9,6 @@ pub fn handle_from_entropy(
     entropy: String,
     language: LanguageOption,
     quiet: bool,
-    _secure_mode: bool,
 ) -> Result<(), CliError> {
     validate_entropy_hex(&entropy)?;
     let mut entropy_bytes = hex::decode(&entropy)?;
@@ -49,7 +48,6 @@ pub fn handle_entropy(
     mnemonic: String,
     language: LanguageOption,
     quiet: bool,
-    _secure_mode: bool,
 ) -> Result<(), CliError> {
     validate_mnemonic_word_count(&mnemonic)?;
     let mnemonic_obj = Mnemonic::parse_in_normalized(language.into(), &mnemonic)?;
