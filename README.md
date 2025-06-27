@@ -12,7 +12,7 @@
 
 This tool provides a complete, auditable implementation of [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) operations using the trusted `rust-bitcoin/rust-bip39` library, with advanced security features for production use.
 
-## ✨ Features
+## Features
 
 ### Core BIP39 Operations
 - **Generate mnemonics** with 12, 15, 18, 21, or 24 words
@@ -23,19 +23,19 @@ This tool provides a complete, auditable implementation of [BIP-39](https://gith
 - **Multi-language support** for all 10 BIP39 standard languages
 
 ### Security Features
-- **🔐 Secure input** for mnemonics and passphrases (hidden from terminal)
-- **🔍 Entropy quality analysis** with statistical validation
-- **✈️ Air-gap environment detection** and security recommendations
-- **💪 Passphrase strength assessment** with detailed feedback
-- **🧹 Memory protection** with automatic zeroization of sensitive data
+- **Secure input** for mnemonics and passphrases (hidden from terminal)
+- **Entropy quality analysis** with statistical validation
+- **Air-gap environment detection** and security recommendations
+- **Passphrase strength assessment** with detailed feedback
+- **Memory protection** with automatic zeroization of sensitive data
 
 ### Quality Assurance
-- **✅ Complete BIP39 compliance** verified against all 24 official test vectors
-- **🧪 Comprehensive testing** with 39 passing tests (integration, property-based, compliance)
-- **🔧 Enhanced error messages** with helpful suggestions and context
-- **📱 Shell completion** generation for bash, zsh, fish, and PowerShell
+- **Complete BIP39 compliance** verified against all 24 official test vectors
+- **Comprehensive testing** with 39 passing tests (integration, property-based, compliance)
+- **Enhanced error messages** with helpful suggestions and context
+- **Shell completion** generation for bash, zsh, fish, and PowerShell
 
-## 🚀 Installation
+## Installation
 
 ### From Source
 
@@ -54,7 +54,7 @@ cargo build --release --target x86_64-unknown-linux-musl
 # Transfer the self-contained binary to your air-gapped system
 ```
 
-## 📖 Usage
+## Usage
 
 ### Basic Operations
 
@@ -106,7 +106,7 @@ bip39 from-entropy "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdead
 bip39 entropy "your mnemonic phrase here"
 ```
 
-### 🔒 Security Features
+### Security Features
 
 #### Security Check
 ```bash
@@ -138,7 +138,7 @@ bip39 generate --analyze-entropy
 bip39 seed "your mnemonic" --analyze-passphrase
 ```
 
-### 🛠️ Advanced Usage
+### Advanced Usage
 
 #### Shell Completion
 ```bash
@@ -157,7 +157,7 @@ bip39 generate --words 12 --quiet
 echo "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about" | bip39 validate --quiet && echo "Valid"
 ```
 
-## 🌍 Supported Languages
+## Supported Languages
 
 All BIP39 standard languages are supported:
 
@@ -172,7 +172,7 @@ All BIP39 standard languages are supported:
 - **Portuguese** (`portuguese`)
 - **Spanish** (`spanish`)
 
-## 📊 Word Counts and Entropy
+## Word Counts and Entropy
 
 | Words | Entropy Bits | Entropy Bytes | Hex Length | Security Level |
 |-------|--------------|---------------|------------|----------------|
@@ -182,7 +182,7 @@ All BIP39 standard languages are supported:
 | 21    | 224          | 28            | 56         | Extremely High |
 | 24    | 256          | 32            | 64         | Extremely High |
 
-## 🔐 Security Considerations
+## Security Considerations
 
 ### Best Practices
 - **Use air-gapped systems** for maximum security when handling production mnemonics
@@ -203,7 +203,7 @@ All BIP39 standard languages are supported:
 - **Property-based testing** ensures algorithmic correctness
 - **Zero compilation warnings** with strict linting
 
-## 🧪 Testing and Validation
+## Testing and Validation
 
 This tool includes comprehensive testing:
 
@@ -217,7 +217,7 @@ Run tests:
 cargo test
 ```
 
-## 🏗️ Building
+## Building
 
 ### Development Build
 ```bash
@@ -238,7 +238,7 @@ rustup target add x86_64-unknown-linux-musl
 cargo build --release --target x86_64-unknown-linux-musl
 ```
 
-## 🤝 Contributing
+## Contributing
 
 This tool is designed to be minimal, auditable, and secure. Contributions should maintain these principles:
 
@@ -257,10 +257,10 @@ cargo clippy  # Check for linting issues
 cargo fmt  # Format code
 ```
 
-## 📄 License
+## License
 CC0 1.0 Universal Licensed
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 Built on the excellent libraries maintained by the Rust Bitcoin community:
 - [`rust-bip39`](https://github.com/rust-bitcoin/rust-bip39) - BIP39 implementation
@@ -268,7 +268,7 @@ Built on the excellent libraries maintained by the Rust Bitcoin community:
 
 Special thanks to the Bitcoin Core developers and the BIP39 specification authors for their foundational work.
 
-## 🔗 Related Projects
+## Related Projects
 
 - [BIP39 Specification](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
 - [Rust Bitcoin](https://github.com/rust-bitcoin/rust-bitcoin)
