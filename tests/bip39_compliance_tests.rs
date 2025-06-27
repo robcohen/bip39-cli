@@ -47,8 +47,7 @@ fn validate_test_vector(vector: &TestVector) -> Result<(), String> {
     if generated_mnemonic.to_string() != vector.mnemonic {
         return Err(format!(
             "Mnemonic mismatch!\nExpected: {}\nGenerated: {}",
-            vector.mnemonic,
-            generated_mnemonic.to_string()
+            vector.mnemonic, generated_mnemonic
         ));
     }
 

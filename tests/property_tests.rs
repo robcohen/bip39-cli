@@ -177,11 +177,11 @@ mod unit_property_tests {
     #[test]
     fn test_word_count_validation_boundary_cases() {
         // Test exact boundary cases
-        assert!(security::validate_mnemonic_word_count(&"word ".repeat(12).trim()).is_ok());
-        assert!(security::validate_mnemonic_word_count(&"word ".repeat(11).trim()).is_err());
-        assert!(security::validate_mnemonic_word_count(&"word ".repeat(13).trim()).is_err());
+        assert!(security::validate_mnemonic_word_count("word ".repeat(12).trim()).is_ok());
+        assert!(security::validate_mnemonic_word_count("word ".repeat(11).trim()).is_err());
+        assert!(security::validate_mnemonic_word_count("word ".repeat(13).trim()).is_err());
 
-        assert!(security::validate_mnemonic_word_count(&"word ".repeat(24).trim()).is_ok());
-        assert!(security::validate_mnemonic_word_count(&"word ".repeat(25).trim()).is_err());
+        assert!(security::validate_mnemonic_word_count("word ".repeat(24).trim()).is_ok());
+        assert!(security::validate_mnemonic_word_count("word ".repeat(25).trim()).is_err());
     }
 }

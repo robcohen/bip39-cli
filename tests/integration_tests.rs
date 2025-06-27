@@ -4,7 +4,7 @@ use predicates::prelude::*;
 #[test]
 fn test_cli_generate_12_words() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&["generate", "--words", "12", "--quiet"]);
+    cmd.args(["generate", "--words", "12", "--quiet"]);
 
     let output = cmd.assert().success();
     let stdout = String::from_utf8(output.get_output().stdout.clone()).unwrap();
@@ -20,7 +20,7 @@ fn test_cli_generate_12_words() {
 #[test]
 fn test_cli_generate_24_words() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&["generate", "--words", "24", "--quiet"]);
+    cmd.args(["generate", "--words", "24", "--quiet"]);
 
     let output = cmd.assert().success();
     let stdout = String::from_utf8(output.get_output().stdout.clone()).unwrap();
@@ -33,7 +33,7 @@ fn test_cli_generate_24_words() {
 #[test]
 fn test_cli_generate_with_entropy_and_seed() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&[
+    cmd.args([
         "generate",
         "--words",
         "12",
@@ -72,7 +72,7 @@ fn test_cli_generate_with_entropy_and_seed() {
 #[test]
 fn test_cli_validate_valid_mnemonic() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&[
+    cmd.args([
         "validate",
         "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
         "--quiet"
@@ -86,7 +86,7 @@ fn test_cli_validate_valid_mnemonic() {
 #[test]
 fn test_cli_validate_invalid_mnemonic() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&[
+    cmd.args([
         "validate",
         "invalid invalid invalid invalid invalid invalid invalid invalid invalid invalid invalid invalid",
         "--quiet"
@@ -100,7 +100,7 @@ fn test_cli_validate_invalid_mnemonic() {
 #[test]
 fn test_cli_validate_wrong_word_count() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&["validate", "abandon abandon abandon", "--quiet"]);
+    cmd.args(["validate", "abandon abandon abandon", "--quiet"]);
 
     cmd.assert()
         .failure()
@@ -110,7 +110,7 @@ fn test_cli_validate_wrong_word_count() {
 #[test]
 fn test_cli_seed_generation() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&[
+    cmd.args([
         "seed",
         "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
         "--quiet"
@@ -128,7 +128,7 @@ fn test_cli_seed_generation() {
 #[test]
 fn test_cli_seed_with_passphrase() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&[
+    cmd.args([
         "seed",
         "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
         "--passphrase", "test",
@@ -141,7 +141,7 @@ fn test_cli_seed_with_passphrase() {
 
     // Generate seed without passphrase
     let mut cmd2 = Command::cargo_bin("bip39").unwrap();
-    cmd2.args(&[
+    cmd2.args([
         "seed",
         "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
         "--quiet"
@@ -158,7 +158,7 @@ fn test_cli_seed_with_passphrase() {
 #[test]
 fn test_cli_from_entropy() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&[
+    cmd.args([
         "from-entropy",
         "a0a1a2a3a4a5a6a7a8a9aaabacadaeaf",
         "--quiet",
@@ -175,7 +175,7 @@ fn test_cli_from_entropy() {
 #[test]
 fn test_cli_from_entropy_invalid_length() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&[
+    cmd.args([
         "from-entropy",
         "a0a1a2a3", // Too short
         "--quiet",
@@ -189,7 +189,7 @@ fn test_cli_from_entropy_invalid_length() {
 #[test]
 fn test_cli_from_entropy_invalid_hex() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&[
+    cmd.args([
         "from-entropy",
         "g0a1a2a3a4a5a6a7a8a9aaabacadaeaf", // 'g' is not valid hex
         "--quiet",
@@ -203,7 +203,7 @@ fn test_cli_from_entropy_invalid_hex() {
 #[test]
 fn test_cli_extract_entropy() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&[
+    cmd.args([
         "entropy",
         "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about",
         "--quiet"
@@ -225,7 +225,7 @@ fn test_cli_roundtrip_entropy_mnemonic() {
 
     // Convert entropy to mnemonic
     let mut cmd1 = Command::cargo_bin("bip39").unwrap();
-    cmd1.args(&["from-entropy", original_entropy, "--quiet"]);
+    cmd1.args(["from-entropy", original_entropy, "--quiet"]);
 
     let output1 = cmd1.assert().success();
     let mnemonic = String::from_utf8(output1.get_output().stdout.clone()).unwrap();
@@ -233,7 +233,7 @@ fn test_cli_roundtrip_entropy_mnemonic() {
 
     // Convert mnemonic back to entropy
     let mut cmd2 = Command::cargo_bin("bip39").unwrap();
-    cmd2.args(&["entropy", mnemonic, "--quiet"]);
+    cmd2.args(["entropy", mnemonic, "--quiet"]);
 
     let output2 = cmd2.assert().success();
     let extracted_entropy = String::from_utf8(output2.get_output().stdout.clone()).unwrap();
@@ -246,7 +246,7 @@ fn test_cli_roundtrip_entropy_mnemonic() {
 #[test]
 fn test_cli_shell_completion() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&["--generate", "bash"]);
+    cmd.args(["--generate", "bash"]);
 
     cmd.assert()
         .success()
@@ -256,7 +256,7 @@ fn test_cli_shell_completion() {
 #[test]
 fn test_cli_help() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&["--help"]);
+    cmd.args(["--help"]);
 
     cmd.assert()
         .success()
@@ -266,7 +266,7 @@ fn test_cli_help() {
 #[test]
 fn test_cli_version() {
     let mut cmd = Command::cargo_bin("bip39").unwrap();
-    cmd.args(&["--version"]);
+    cmd.args(["--version"]);
 
     cmd.assert()
         .success()
@@ -286,7 +286,7 @@ fn test_cli_no_command() {
 fn test_cli_different_languages() {
     for language in &["english", "japanese", "spanish", "french"] {
         let mut cmd = Command::cargo_bin("bip39").unwrap();
-        cmd.args(&[
+        cmd.args([
             "generate",
             "--words",
             "12",
