@@ -60,7 +60,7 @@ proptest! {
         s in "[g-z]+"  // Generate strings with non-hex characters
     ) {
         // Pad to valid length but with invalid characters
-        let padded = format!("{:0<32}", s);
+        let padded = format!("{s:0<32}");
         prop_assert!(security::validate_entropy_hex(&padded).is_err());
     }
 

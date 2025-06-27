@@ -39,10 +39,10 @@ fn validate_test_vector(vector: &TestVector) -> Result<(), String> {
 
     // 1. Test entropy -> mnemonic conversion
     let entropy_bytes =
-        hex::decode(&vector.entropy).map_err(|e| format!("Failed to decode entropy: {}", e))?;
+        hex::decode(&vector.entropy).map_err(|e| format!("Failed to decode entropy: {e}"))?;
 
     let generated_mnemonic = Mnemonic::from_entropy(&entropy_bytes)
-        .map_err(|e| format!("Failed to generate mnemonic from entropy: {}", e))?;
+        .map_err(|e| format!("Failed to generate mnemonic from entropy: {e}"))?;
 
     if generated_mnemonic.to_string() != vector.mnemonic {
         return Err(format!(
@@ -52,8 +52,8 @@ fn validate_test_vector(vector: &TestVector) -> Result<(), String> {
     }
 
     // 2. Test mnemonic -> seed conversion with "TREZOR" passphrase
-    let parsed_mnemonic = Mnemonic::parse(&vector.mnemonic)
-        .map_err(|e| format!("Failed to parse mnemonic: {}", e))?;
+    let parsed_mnemonic =
+        Mnemonic::parse(&vector.mnemonic).map_err(|e| format!("Failed to parse mnemonic: {e}"))?;
 
     let generated_seed = parsed_mnemonic.to_seed("TREZOR");
     let generated_seed_hex = hex::encode(generated_seed);
@@ -194,8 +194,7 @@ mod tests {
 
             assert_eq!(
                 *test_entropy, recovered_entropy_hex,
-                "Entropy round-trip failed for {}",
-                test_entropy
+                "Entropy round-trip failed for {test_entropy}"
             );
         }
     }
@@ -215,10 +214,7 @@ mod tests {
         for (bytes, count) in &entropy_lengths {
             let bits = bytes * 8;
             let words = (bits * 3) / 32;
-            println!(
-                "  {} bytes ({} bits, {} words): {} vectors",
-                bytes, bits, words, count
-            );
+            println!("  {bytes} bytes ({bits} bits, {words} words): {count} vectors");
         }
 
         // Ensure we have vectors for the entropy sizes in the official test vectors
