@@ -5,7 +5,7 @@
 
   <p>
     <a href="https://github.com/robcohen/bip39-cli/blob/main/LICENSE"><img alt="CC0 1.0 Universal Licensed" src="https://img.shields.io/badge/license-CC0--1.0-blue.svg"/></a>
-    <a href="https://github.com/robcohen/bip39-cli/actions"><img alt="CI Status" src="https://github.com/robcohen/bip39-cli/workflows/CI/badge.svg"></a>
+    <a href="https://github.com/robcohen/bip39-cli/actions"><img alt="CI Status" src="https://img.shields.io/github/actions/workflow/status/robcohen/bip39-cli/ci.yml?branch=main&label=CI"/></a>
     <a href="https://blog.rust-lang.org/2023/06/01/Rust-1.70.0.html"><img alt="Rustc Version 1.70.0+" src="https://img.shields.io/badge/rustc-1.70.0%2B-lightgrey.svg"/></a>
   </p>
 </div>
