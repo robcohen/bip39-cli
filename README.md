@@ -1,9 +1,14 @@
-# bip39-cli
+<div align="center">
+    <h1>bip39-cli</h1>
 
-A comprehensive, secure command-line tool for BIP39 mnemonic operations built on the rust-bitcoin ecosystem.
+  <p>A comprehensive, secure command-line tool for BIP39 mnemonic operations built on the rust-bitcoin ecosystem.</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+  <p>
+    <a href="https://github.com/robcohen/bip39-cli/blob/main/LICENSE"><img alt="CC0 1.0 Universal Licensed" src="https://img.shields.io/badge/license-CC0--1.0-blue.svg"/></a>
+    <a href="https://github.com/robcohen/bip39-cli/actions"><img alt="CI Status" src="https://github.com/robcohen/bip39-cli/workflows/CI/badge.svg"></a>
+    <a href="https://blog.rust-lang.org/2023/06/01/Rust-1.70.0.html"><img alt="Rustc Version 1.70.0+" src="https://img.shields.io/badge/rustc-1.70.0%2B-lightgrey.svg"/></a>
+  </p>
+</div>
 
 This tool provides a complete, auditable implementation of [BIP-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki) operations using the trusted `rust-bitcoin/rust-bip39` library, with advanced security features for production use.
 
@@ -253,13 +258,7 @@ cargo fmt  # Format code
 ```
 
 ## 📄 License
-
-Licensed under either of:
-
-- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
-- MIT License ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
-
-at your option.
+CC0 1.0 Universal Licensed
 
 ## 🙏 Acknowledgments
 
